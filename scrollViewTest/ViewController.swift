@@ -33,7 +33,6 @@ class ViewController: UIViewController {
        let contentView2 = UIView()
         contentView2.translatesAutoresizingMaskIntoConstraints = false
         contentView2.backgroundColor = UIColor(named: "Green")
-        contentView2.isHidden = true
         return contentView2
     }()
 
@@ -113,20 +112,19 @@ class ViewController: UIViewController {
     // MARK : Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .blue
+        view.backgroundColor = .systemBackground
         configure()
-        allRecordsScrollView.setContentOffset(CGPoint(x: allRecordsScrollView.frame.size.width / 2, y: 0), animated: false)
+//        allRecordsScrollView.setContentOffset(CGPoint(x: allRecordsScrollView.frame.size.width / 2, y: 0), animated: false)
+//        allRecordsScrollView.contentOffset = CGPoint(x: 0, y: 0)
     }
 
     private func configure(){
-//        setupScrollView()
         configureUI()
 //        allRecordsScrollView.contentOffset.x = 0
     }
 
 
     // MARK : Setup UI
-
     private func configureUI(){
         view.addSubview(allRecordsScrollView)
         NSLayoutConstraint.activate([
@@ -140,20 +138,21 @@ class ViewController: UIViewController {
         allRecordsScrollView.addSubview(contentView1)
         allRecordsScrollView.addSubview(contentView2)
         NSLayoutConstraint.activate([
-            // contentview1 constraints for scrollView
+            // contentView1 constraints for scrollView
             contentView1.topAnchor.constraint(equalTo: allRecordsScrollView.topAnchor),
             contentView1.bottomAnchor.constraint(equalTo: allRecordsScrollView.bottomAnchor),
             contentView1.leadingAnchor.constraint(equalTo: allRecordsScrollView.leadingAnchor, constant: 0),
             contentView1.widthAnchor.constraint(equalTo: allRecordsScrollView.widthAnchor, multiplier: 0.5),
             contentView1.heightAnchor.constraint(equalTo: allRecordsScrollView.heightAnchor),
             
-            // contentview2 constraints for scrollview
+            // contentView2 constraints for scrollView
             contentView2.topAnchor.constraint(equalTo: allRecordsScrollView.topAnchor),
             contentView2.bottomAnchor.constraint(equalTo: allRecordsScrollView.bottomAnchor),
-            contentView2.trailingAnchor.constraint(equalTo: allRecordsScrollView.trailingAnchor, constant: 0),
+            contentView2.leadingAnchor.constraint(equalTo: contentView1.trailingAnchor, constant: 0),
             contentView2.widthAnchor.constraint(equalTo: allRecordsScrollView.widthAnchor, multiplier: 0.5),
             contentView2.heightAnchor.constraint(equalTo: allRecordsScrollView.heightAnchor)
         ])
+
 
         contentView1.addSubview(backButton)
         contentView1.addSubview(kendinYapLabel)
@@ -208,9 +207,6 @@ class ViewController: UIViewController {
     // MARK : Actions
     @objc func recordButtonTapped() {
         print("Record button tapped.")
-        
-        contentView1.isHidden = true
-        contentView2.isHidden = false
         let xOffset = allRecordsScrollView.frame.width // Kaydırma mesafesi, scrollView'ın genişliği kadar olmalıdır
         allRecordsScrollView.setContentOffset(CGPoint(x: xOffset, y: 0), animated: true)
     }
@@ -224,8 +220,6 @@ class ViewController: UIViewController {
 
     @objc func stopRecordButtonTapped(){
         print("Stop record button tapped.")
-        contentView2.isHidden = true
-        contentView1.isHidden = false
         allRecordsScrollView.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
     }
     
