@@ -1,5 +1,3 @@
-// TO DO : BU KODLARA GORE CHATGPT ILE YAP.
-
 //
 //  ViewController.swift
 //  scrollViewTest
@@ -33,6 +31,7 @@ class ViewController: UIViewController {
        let contentView2 = UIView()
         contentView2.translatesAutoresizingMaskIntoConstraints = false
         contentView2.backgroundColor = UIColor(named: "Green")
+        contentView2.isHidden = true
         return contentView2
     }()
 
@@ -149,6 +148,7 @@ class ViewController: UIViewController {
             contentView2.topAnchor.constraint(equalTo: allRecordsScrollView.topAnchor),
             contentView2.bottomAnchor.constraint(equalTo: allRecordsScrollView.bottomAnchor),
             contentView2.leadingAnchor.constraint(equalTo: contentView1.trailingAnchor, constant: 0),
+            contentView2.trailingAnchor.constraint(equalTo: allRecordsScrollView.trailingAnchor, constant: -allRecordsScrollView.frame.size.width * 2),
             contentView2.widthAnchor.constraint(equalTo: allRecordsScrollView.widthAnchor, multiplier: 0.5),
             contentView2.heightAnchor.constraint(equalTo: allRecordsScrollView.heightAnchor)
         ])
@@ -207,6 +207,8 @@ class ViewController: UIViewController {
     // MARK : Actions
     @objc func recordButtonTapped() {
         print("Record button tapped.")
+        contentView1.isHidden = true
+        contentView2.isHidden = false
         let xOffset = allRecordsScrollView.frame.width // Kaydırma mesafesi, scrollView'ın genişliği kadar olmalıdır
         allRecordsScrollView.setContentOffset(CGPoint(x: xOffset, y: 0), animated: true)
     }
@@ -219,6 +221,8 @@ class ViewController: UIViewController {
     }
 
     @objc func stopRecordButtonTapped(){
+        contentView2.isHidden = true
+        contentView1.isHidden = false
         print("Stop record button tapped.")
         allRecordsScrollView.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
     }
