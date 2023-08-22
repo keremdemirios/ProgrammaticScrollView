@@ -11,28 +11,21 @@ import UIKit
 class ViewController: UIViewController {
     
     // MARK : UI Elements
-    private var allRecordsScrollView: UIScrollView = {
-        let allRecordsScrollView = UIScrollView()
-        allRecordsScrollView.isPagingEnabled = true
-        allRecordsScrollView.contentInsetAdjustmentBehavior = .never
-        allRecordsScrollView.showsHorizontalScrollIndicator = false
-        allRecordsScrollView.translatesAutoresizingMaskIntoConstraints = false
-        allRecordsScrollView.contentSize = CGSize(width: UIScreen.main.bounds.width * 2, height: UIScreen.main.bounds.height)
-        return allRecordsScrollView
-    }()
-    
     private var contentView1: UIView = {
         let contentView1 = UIView()
         contentView1.translatesAutoresizingMaskIntoConstraints = false
-        contentView1.backgroundColor = UIColor(named: "LightGreen")
+        // clear
+//        contentView1.backgroundColor = UIColor(named: "LightGreen")
+        contentView1.backgroundColor = .clear
         return contentView1
     }()
     
     private var contentView2: UIView = {
         let contentView2 = UIView()
         contentView2.translatesAutoresizingMaskIntoConstraints = false
+        // clear
         contentView2.backgroundColor = UIColor(named: "Green")
-        contentView2.isHidden = true
+//        contentView2.backgroundColor = .clear
         return contentView2
     }()
     
@@ -112,7 +105,10 @@ class ViewController: UIViewController {
     // MARK : Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .red
+        
+        // set view background color
+        view.backgroundColor = UIColor(named: "LightGreen")
+        
         configure()
     }
     
@@ -123,67 +119,71 @@ class ViewController: UIViewController {
     
     // MARK : Setup UI
     private func configureUI(){
-        view.addSubview(allRecordsScrollView)
-        NSLayoutConstraint.activate([
-            allRecordsScrollView.topAnchor.constraint(equalTo: view.topAnchor),
-            allRecordsScrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            allRecordsScrollView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 2),
-            allRecordsScrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-            
-        ])
-        // ContentViews constraints for allRecordsScrollView
-        allRecordsScrollView.addSubview(contentView1)
-        allRecordsScrollView.addSubview(contentView2)
-        NSLayoutConstraint.activate([
-            // contentView1 constraints for scrollView
-            contentView1.topAnchor.constraint(equalTo: allRecordsScrollView.topAnchor),
-            contentView1.bottomAnchor.constraint(equalTo: allRecordsScrollView.bottomAnchor),
-            contentView1.leadingAnchor.constraint(equalTo: allRecordsScrollView.leadingAnchor, constant: 0),
-            contentView1.widthAnchor.constraint(equalTo: allRecordsScrollView.widthAnchor, multiplier: 0.5),
-            contentView1.heightAnchor.constraint(equalTo: allRecordsScrollView.heightAnchor),
-            
-            // contentView2 constraints for scrollView
-            contentView2.topAnchor.constraint(equalTo: allRecordsScrollView.topAnchor),
-            contentView2.bottomAnchor.constraint(equalTo: allRecordsScrollView.bottomAnchor),
-            contentView2.leadingAnchor.constraint(equalTo: contentView1.trailingAnchor),
-            contentView2.widthAnchor.constraint(equalTo: allRecordsScrollView.widthAnchor, multiplier: 0.5),
-            contentView2.heightAnchor.constraint(equalTo: allRecordsScrollView.heightAnchor)
-        ])
         
-        contentView1.addSubview(backButton)
-        contentView1.addSubview(kendinYapLabel)
-        contentView1.addSubview(bigGreenTopBubbleImageView)
-        contentView1.addSubview(recordButton)
-        contentView1.addSubview(recorderVoicesLabel)
+        // add bigGreenTopBubbleImageView as the first subview
+        //  the "content" views will have clear backgrounds,
+        //  so we see the "bubble" image through them
+        view.addSubview(bigGreenTopBubbleImageView)
         NSLayoutConstraint.activate([
-            // Back button constraints
-            backButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 48),
-            backButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            backButton.widthAnchor.constraint(equalToConstant: 50),
-            backButton.heightAnchor.constraint(equalToConstant: 54),
-            // KendinYapLabel constraints
-            kendinYapLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            kendinYapLabel.centerYAnchor.constraint(equalTo: backButton.centerYAnchor),
             // BigGreenBubble constraints
             bigGreenTopBubbleImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: -70),
             bigGreenTopBubbleImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
             bigGreenTopBubbleImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
             bigGreenTopBubbleImageView.heightAnchor.constraint(equalToConstant: 466),
+        ])
+        
+        // add the two "content" views
+        view.addSubview(contentView1)
+        view.addSubview(contentView2)
+        NSLayoutConstraint.activate([
+            
+            // constrain both "content" views to fill the view
+            //  contentView2 will be "overlaid on top of" contentView1
+            
+            contentView1.topAnchor.constraint(equalTo: view.topAnchor),
+            contentView1.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            contentView1.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            contentView1.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            
+            contentView2.topAnchor.constraint(equalTo: view.topAnchor),
+            contentView2.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            contentView2.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            contentView2.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            
+        ])
+        
+        // add contentView1's subviews
+        contentView1.addSubview(backButton)
+        contentView1.addSubview(kendinYapLabel)
+        contentView1.addSubview(recordButton)
+        contentView1.addSubview(recorderVoicesLabel)
+        NSLayoutConstraint.activate([
+            // constrain subviews to contentView1, NOT to view
+            // Back button constraints
+            backButton.topAnchor.constraint(equalTo: contentView1.topAnchor, constant: 48),
+            backButton.leadingAnchor.constraint(equalTo: contentView1.leadingAnchor, constant: 20),
+            backButton.widthAnchor.constraint(equalToConstant: 50),
+            backButton.heightAnchor.constraint(equalToConstant: 54),
+            // KendinYapLabel constraints
+            kendinYapLabel.centerXAnchor.constraint(equalTo: contentView1.centerXAnchor),
+            kendinYapLabel.centerYAnchor.constraint(equalTo: backButton.centerYAnchor),
             // RecordButton constraints
             recordButton.topAnchor.constraint(equalTo: kendinYapLabel.bottomAnchor, constant: 55),
-            recordButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 91),
-            recordButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -91),
+            recordButton.leadingAnchor.constraint(equalTo: contentView1.leadingAnchor, constant: 91),
+            recordButton.trailingAnchor.constraint(equalTo: contentView1.trailingAnchor, constant: -91),
             recordButton.heightAnchor.constraint(equalToConstant: 77),
             // RecorderVoicesLabel constraints
             recorderVoicesLabel.topAnchor.constraint(equalTo: recordButton.bottomAnchor, constant: 20),
-            recorderVoicesLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 43),
+            recorderVoicesLabel.leadingAnchor.constraint(equalTo: contentView1.leadingAnchor, constant: 43),
             recorderVoicesLabel.heightAnchor.constraint(equalToConstant: 25.5)
         ])
         
+        // add contentView1's subviews
         contentView2.addSubview(recordCounterLabel)
         contentView2.addSubview(recordingStatusLabel)
         contentView2.addSubview(stopRecordButton)
         NSLayoutConstraint.activate([
+            // constrain subviews to contentView2, NOT to view
             // Record counter label constraints
             recordCounterLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 200),
             recordCounterLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -196,17 +196,20 @@ class ViewController: UIViewController {
             stopRecordButton.widthAnchor.constraint(equalToConstant: 118),
             stopRecordButton.heightAnchor.constraint(equalToConstant: 118)
         ])
+
+        // start with contentView2 hidden
+        contentView2.isHidden = true
     }
+    
     
     // MARK : Functions
     
     // MARK : Actions
     @objc func recordButtonTapped() {
         print("Record button tapped.")
-        contentView2.isHidden = false
+        // hide contentView1, show contentView2
         contentView1.isHidden = true
-        let xOffset = allRecordsScrollView.frame.width / 2
-        allRecordsScrollView.setContentOffset(CGPoint(x: xOffset, y: 0), animated: false)
+        contentView2.isHidden = false
     }
     
     @objc func backButtonTapped() {
@@ -214,11 +217,9 @@ class ViewController: UIViewController {
     }
     
     @objc func stopRecordButtonTapped(){
-        contentView2.isHidden = true
-        contentView1.isHidden = false
         print("Stop record button tapped.")
-        allRecordsScrollView.setContentOffset(CGPoint(x: 0, y: 0), animated: false)
+        // show contentView1, hide contentView2
+        contentView1.isHidden = false
+        contentView2.isHidden = true
     }
 }
-
-// MARK : Extensions
