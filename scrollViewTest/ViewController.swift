@@ -1,4 +1,4 @@
-
+// Ana projeye aktar.
 //
 //  ViewController.swift
 //  scrollViewTest
