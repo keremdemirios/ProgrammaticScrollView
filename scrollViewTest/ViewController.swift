@@ -1,3 +1,4 @@
+
 //
 //  ViewController.swift
 //  scrollViewTest
@@ -8,7 +9,7 @@
 import UIKit
 
 class ViewController: UIViewController {
-
+    
     // MARK : UI Elements
     private var allRecordsScrollView: UIScrollView = {
         let allRecordsScrollView = UIScrollView()
@@ -19,7 +20,7 @@ class ViewController: UIViewController {
         allRecordsScrollView.contentSize = CGSize(width: UIScreen.main.bounds.width * 2, height: UIScreen.main.bounds.height)
         return allRecordsScrollView
     }()
-
+    
     private var contentView1: UIView = {
         let contentView1 = UIView()
         contentView1.translatesAutoresizingMaskIntoConstraints = false
@@ -28,13 +29,13 @@ class ViewController: UIViewController {
     }()
     
     private var contentView2: UIView = {
-       let contentView2 = UIView()
+        let contentView2 = UIView()
         contentView2.translatesAutoresizingMaskIntoConstraints = false
         contentView2.backgroundColor = UIColor(named: "Green")
-//        contentView2.isHidden = true
+        contentView2.isHidden = true
         return contentView2
     }()
-
+    
     private let kendinYapLabel:UILabel = {
         let kendinYapLabel = UILabel()
         kendinYapLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -43,7 +44,7 @@ class ViewController: UIViewController {
         kendinYapLabel.textColor = .white
         return kendinYapLabel
     }()
-
+    
     lazy var backButton: UIButton = {
         let backButton = UIButton()
         backButton.translatesAutoresizingMaskIntoConstraints = false
@@ -52,7 +53,7 @@ class ViewController: UIViewController {
         backButton.setTitleColor(UIColor.white, for: .normal)
         return backButton
     }()
-
+    
     private let bigGreenTopBubbleImageView: UIImageView = {
         let bigGreenTopBubbleImageView = UIImageView()
         let image = UIImage(named: "bigGreenTopBubble")
@@ -61,16 +62,16 @@ class ViewController: UIViewController {
         bigGreenTopBubbleImageView.contentMode = .scaleAspectFill
         return bigGreenTopBubbleImageView
     }()
-
+    
     lazy var recordButton:UIButton = {
         let recordButton = UIButton()
-        let image = UIImage(named: "recordButtonBGAll") // YAPILACAK -> RESMI DUZELT
+        let image = UIImage(named: "recordButtonBGAll")
         recordButton.translatesAutoresizingMaskIntoConstraints = false
         recordButton.addTarget(self, action: #selector(recordButtonTapped), for: .touchUpInside)
         recordButton.setImage(image, for: .normal)
         return recordButton
     }()
-
+    
     private let recorderVoicesLabel:UILabel = {
         let recorderVoicesLabel = UILabel()
         recorderVoicesLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -79,7 +80,7 @@ class ViewController: UIViewController {
         recorderVoicesLabel.textColor = .white
         return recorderVoicesLabel
     }()
-
+    
     public var recordCounterLabel:UILabel = {
         let recordCounterLabel = UILabel()
         recordCounterLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -88,7 +89,7 @@ class ViewController: UIViewController {
         recordCounterLabel.textColor = .white
         return recordCounterLabel
     }()
-
+    
     public var recordingStatusLabel:UILabel = {
         let recordingStatusLabel = UILabel()
         recordingStatusLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -97,7 +98,7 @@ class ViewController: UIViewController {
         recordingStatusLabel.textColor = .white
         return recordingStatusLabel
     }()
-
+    
     lazy var stopRecordButton:UIButton = {
         let stopRecordButton = UIButton()
         let image = UIImage(named: "recordButtonStopIcon")
@@ -106,20 +107,20 @@ class ViewController: UIViewController {
         stopRecordButton.setImage(image, for: .normal)
         return stopRecordButton
     }()
-
-
+    
+    
     // MARK : Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .red
         configure()
     }
-
+    
     private func configure(){
         configureUI()
     }
-
-
+    
+    
     // MARK : Setup UI
     private func configureUI(){
         view.addSubview(allRecordsScrollView)
@@ -148,7 +149,7 @@ class ViewController: UIViewController {
             contentView2.widthAnchor.constraint(equalTo: allRecordsScrollView.widthAnchor, multiplier: 0.5),
             contentView2.heightAnchor.constraint(equalTo: allRecordsScrollView.heightAnchor)
         ])
-
+        
         contentView1.addSubview(backButton)
         contentView1.addSubview(kendinYapLabel)
         contentView1.addSubview(bigGreenTopBubbleImageView)
@@ -196,32 +197,28 @@ class ViewController: UIViewController {
             stopRecordButton.heightAnchor.constraint(equalToConstant: 118)
         ])
     }
-
+    
     // MARK : Functions
-
+    
     // MARK : Actions
     @objc func recordButtonTapped() {
         print("Record button tapped.")
-//        contentView1.isHidden = true
-//        contentView2.isHidden = false
-        let xOffset = allRecordsScrollView.frame.width // Kaydırma mesafesi, scrollView'ın genişliği kadar olmalıdır
-        allRecordsScrollView.setContentOffset(CGPoint(x: xOffset, y: 0), animated: true)
-    }
-
-    @objc func backButtonTapped() {
-        print("Back button tapped.")
-        
-        let targetContentOffset = CGPoint(x: 0, y: 0)
-        allRecordsScrollView.setContentOffset(targetContentOffset, animated: true)
-    }
-
-    @objc func stopRecordButtonTapped(){
-//        contentView2.isHidden = true
-//        contentView1.isHidden = false
-        print("Stop record button tapped.")
-//        allRecordsScrollView.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
+        contentView2.isHidden = false
+        contentView1.isHidden = true
+        let xOffset = allRecordsScrollView.frame.width / 2
+        allRecordsScrollView.setContentOffset(CGPoint(x: xOffset, y: 0), animated: false)
     }
     
+    @objc func backButtonTapped() {
+        print("Back button tapped.")
+    }
+    
+    @objc func stopRecordButtonTapped(){
+        contentView2.isHidden = true
+        contentView1.isHidden = false
+        print("Stop record button tapped.")
+        allRecordsScrollView.setContentOffset(CGPoint(x: 0, y: 0), animated: false)
+    }
 }
 
 // MARK : Extensions
